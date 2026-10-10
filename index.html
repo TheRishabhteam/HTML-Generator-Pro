@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI HTML Website Generator — Pro</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0A1628;color:#fff;min-height:100vh;}
+.header{background:linear-gradient(135deg,#0A1628,#1A3A5C);padding:20px;text-align:center;border-bottom:2px solid #C9A84C44;}
+.header h1{font-size:22px;font-weight:900;}
+.header h1 span{color:#C9A84C;}
+.header p{font-size:12px;color:#7EB8F7;margin-top:4px;}
+.badge{background:#1D9E7522;border:1px solid #1D9E75;color:#1D9E75;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block;margin-top:6px;}
+.wrap{padding:20px;max-width:640px;margin:0 auto;}
+.card{background:#0D1F35;border:1px solid #1A3A5C;border-radius:14px;padding:18px;margin-bottom:16px;}
+.card h3{font-size:13px;font-weight:700;color:#7EB8F7;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;}
+label{display:block;font-size:12px;font-weight:600;color:#7EB8F7;margin-bottom:5px;margin-top:12px;}
+label:first-child{margin-top:0;}
+input,select,textarea{width:100%;background:#050D1A;color:#fff;border:1px solid #1A3A5C;border-radius:8px;padding:11px;font-size:14px;outline:none;transition:border-color 0.2s;}
+input:focus,select:focus,textarea:focus{border-color:#0A66C2;}
+select option{background:#050D1A;}
+.quick-box{background:#1A1A0A;border:1px solid #C9A84C44;border-radius:12px;padding:14px;margin-bottom:14px;}
+.quick-box label{color:#C9A84C;margin-top:0;}
+.quick-box textarea{background:#0A0A00;color:#E8D5A3;font-family:monospace;font-size:12px;}
+.btn-gold{width:100%;background:#C9A84C;color:#1A1A1A;border:none;padding:11px;border-radius:8px;font-size:13px;font-weight:700;margin-top:8px;cursor:pointer;}
+.divider{text-align:center;color:#333;font-size:11px;margin:12px 0;}
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+.style-opt{border:2px solid #1A3A5C;border-radius:10px;padding:10px 8px;cursor:pointer;text-align:center;font-size:11px;font-weight:700;color:#7EB8F7;transition:all 0.2s;}
+.style-opt.sel{border-color:#C9A84C;background:#C9A84C22;color:#C9A84C;}
+.color-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:6px;}
+.color-opt{border:2px solid transparent;border-radius:8px;padding:8px 4px;cursor:pointer;text-align:center;font-size:10px;font-weight:700;transition:all 0.2s;}
+.color-opt.sel{border-color:#fff;box-shadow:0 0 0 2px #0A66C2;}
+.anim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px;}
+.anim-opt{border:1px solid #1A3A5C;border-radius:8px;padding:8px 6px;cursor:pointer;text-align:center;font-size:10px;font-weight:600;color:#7EB8F7;transition:all 0.2s;}
+.anim-opt.sel{border-color:#1D9E75;background:#1D9E7522;color:#1D9E75;}
+.btn-gen{width:100%;background:linear-gradient(135deg,#0A66C2,#1D9E75);color:#fff;border:none;padding:18px;border-radius:12px;font-size:17px;font-weight:800;cursor:pointer;letter-spacing:0.5px;box-shadow:0 8px 24px rgba(10,102,194,0.4);transition:all 0.3s;margin-top:4px;}
+.btn-gen:disabled{background:#333;box-shadow:none;cursor:not-allowed;}
+.status{display:none;background:#0D1F35;border-radius:12px;padding:18px;margin-top:14px;text-align:center;}
+.status.show{display:block;}
+.spinner{width:38px;height:38px;border:3px solid #1A3A5C;border-top-color:#0A66C2;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 10px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.stxt{font-size:13px;color:#7EB8F7;}
+.log{background:#050D1A;border-radius:8px;padding:10px;margin-top:10px;max-height:130px;overflow-y:auto;}
+.ll{font-size:11px;font-family:monospace;padding:2px 0;}
+.li{color:#7EB8F7;}.lok{color:#6ddf6d;}.le{color:#ff6b6b;}
+.result{display:none;background:#0D1F35;border-radius:12px;padding:18px;margin-top:14px;}
+.result.show{display:block;}
+.result h3{color:#1D9E75;font-size:15px;margin-bottom:12px;}
+.res-card{background:#1A2A3A;border-radius:10px;padding:14px;border-left:3px solid #C9A84C;}
+.res-card strong{display:block;font-size:13px;margin-bottom:4px;}
+.res-card small{color:#7EB8F7;font-size:11px;display:block;margin-bottom:10px;}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.btn-s{padding:11px;border-radius:8px;font-size:12px;font-weight:700;text-align:center;text-decoration:none;border:none;cursor:pointer;display:block;}
+.btn-prev{background:#1D9E75;color:#fff;}
+.btn-dl{background:#0A66C2;color:#fff;}
+.btn-wa{background:#25D366;color:#fff;width:100%;padding:12px;border-radius:8px;font-size:13px;font-weight:700;border:none;cursor:pointer;margin-top:8px;}
+.footer{text-align:center;font-size:11px;color:#333;padding:20px 0 30px;}
+.footer a{color:#7EB8F7;}
+.setup-card{background:#1A1A2E;border:1px solid #C9A84C44;border-radius:12px;padding:14px;margin-bottom:14px;}
+.setup-card h3{font-size:13px;color:#C9A84C;margin-bottom:10px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🚀 AI HTML Website <span>Generator Pro</span></h1>
+  <p>Pure HTML · CSS · Bootstrap · GSAP · jQuery</p>
+  <span class="badge">✨ No WordPress Needed — Deliver HTML Files</span>
+</div>
+
+<div class="wrap">
+
+  <!-- API Setup -->
+  <div class="setup-card" id="setup-card">
+    <h3>⚙️ One-Time Setup</h3>
+    <label>Groq API Key</label>
+    <input type="password" id="ak" placeholder="gsk_...">
+    <label style="margin-top:8px;">Unsplash Key (optional — for real photos)</label>
+    <input type="password" id="uk" placeholder="Access Key from unsplash.com/developers">
+    <button class="btn-gold" onclick="saveKeys()">💾 Save & Continue</button>
+  </div>
+
+  <!-- Quick Paste -->
+  <div class="quick-box">
+    <label>⚡ Google se copy karo — yahan paste karo</label>
+    <textarea id="qp" rows="4" placeholder="Business: Smile Dental Clinic&#10;Location: Connaught Place, New Delhi&#10;Phone: +91 98765 43210&#10;Services: Braces, Implants, Whitening&#10;Extra: 15 years experience, free consultation"></textarea>
+    <button class="btn-gold" onclick="autofill()">✨ Auto Fill From Paste</button>
+  </div>
+
+  <div class="divider">— ya manually bharo —</div>
+
+  <!-- Main fields -->
+  <div class="card">
+    <h3>📋 Business Details</h3>
+    <label>Industry</label>
+    <select id="bt">
+      <option value="">-- Select Industry --</option>
+      <option value="dental clinic">🦷 Dental Clinic</option>
+      <option value="medical spa">💆 Medical Spa / Aesthetic</option>
+      <option value="wellness center">🌿 Wellness Center</option>
+      <option value="real estate agency">🏠 Real Estate</option>
+      <option value="restaurant">🍽️ Restaurant / Cafe</option>
+      <option value="law firm">⚖️ Law Firm</option>
+      <option value="gym fitness center">💪 Gym / Fitness</option>
+      <option value="education coaching">📚 Education / Coaching</option>
+      <option value="ecommerce store">🛒 E-Commerce</option>
+      <option value="interior design studio">🛋️ Interior Design</option>
+      <option value="photography studio">📸 Photography</option>
+      <option value="travel agency">✈️ Travel Agency</option>
+      <option value="hospital clinic">🏥 Hospital / Clinic</option>
+      <option value="CA accounting firm">📊 CA / Accounting</option>
+      <option value="news magazine">📰 News & Magazine</option>
+      <option value="fashion boutique">👗 Fashion Boutique</option>
+      <option value="digital marketing agency">💻 Digital Marketing</option>
+      <option value="hotel resort">🏨 Hotel / Resort</option>
+      <option value="salon beauty parlour">💇 Salon & Beauty</option>
+      <option value="construction firm">🏗️ Construction</option>
+    </select>
+    <label>Business Name</label>
+    <input type="text" id="bn" placeholder="e.g. Smile Care Dental">
+    <label>Location / City</label>
+    <input type="text" id="loc" placeholder="e.g. Connaught Place, New Delhi">
+    <label>Key Services</label>
+    <input type="text" id="svc" placeholder="e.g. Braces, Implants, Whitening">
+    <label>WhatsApp Number</label>
+    <input type="text" id="wa" placeholder="+91 98765 43210">
+    <label>Extra Info</label>
+    <textarea id="ext" rows="2" placeholder="15 years experience, free consultation, EMI available..."></textarea>
+  </div>
+
+  <!-- Design Style -->
+  <div class="card">
+    <h3>🎨 Design Style</h3>
+    <label>Hero Style</label>
+    <div class="style-grid" id="hero-grid">
+      <div class="style-opt sel" data-v="fullscreen_video_feel" onclick="selOpt(this,'hero-grid')">🎬 Cinematic Full</div>
+      <div class="style-opt" data-v="split_image_text" onclick="selOpt(this,'hero-grid')">⬛ Split Image</div>
+      <div class="style-opt" data-v="bold_typography" onclick="selOpt(this,'hero-grid')">💪 Bold Dark</div>
+      <div class="style-opt" data-v="minimal_elegant" onclick="selOpt(this,'hero-grid')">✨ Minimal Elegant</div>
+      <div class="style-opt" data-v="gradient_modern" onclick="selOpt(this,'hero-grid')">🌈 Gradient Modern</div>
+      <div class="style-opt" data-v="ai_decide" onclick="selOpt(this,'hero-grid')">🤖 AI Decides</div>
+    </div>
+    <input type="hidden" id="hero-style" value="fullscreen_video_feel">
+
+    <label style="margin-top:14px;">Color Theme</label>
+    <div class="color-grid" id="color-grid">
+      <div class="color-opt sel" data-v="blue_pro" style="background:linear-gradient(135deg,#0A66C2,#1A3A5C);color:#fff" onclick="selOpt(this,'color-grid')">Blue Pro</div>
+      <div class="color-opt" data-v="dark_gold" style="background:linear-gradient(135deg,#C9A84C,#1A1A1A);color:#fff" onclick="selOpt(this,'color-grid')">Dark Gold</div>
+      <div class="color-opt" data-v="green_nature" style="background:linear-gradient(135deg,#1D9E75,#0F6E56);color:#fff" onclick="selOpt(this,'color-grid')">Green</div>
+      <div class="color-opt" data-v="royal_purple" style="background:linear-gradient(135deg,#6C3FC5,#4A1E8C);color:#fff" onclick="selOpt(this,'color-grid')">Purple</div>
+      <div class="color-opt" data-v="bold_red" style="background:linear-gradient(135deg,#E53935,#B71C1C);color:#fff" onclick="selOpt(this,'color-grid')">Bold Red</div>
+      <div class="color-opt" data-v="teal_fresh" style="background:linear-gradient(135deg,#00897B,#00695C);color:#fff" onclick="selOpt(this,'color-grid')">Teal</div>
+      <div class="color-opt" data-v="rose_gold" style="background:linear-gradient(135deg,#C2185B,#880E4F);color:#fff" onclick="selOpt(this,'color-grid')">Rose Gold</div>
+      <div class="color-opt" data-v="midnight_orange" style="background:linear-gradient(135deg,#FF6F00,#1A0A00);color:#fff" onclick="selOpt(this,'color-grid')">Orange Dark</div>
+    </div>
+    <input type="hidden" id="color-theme" value="blue_pro">
+
+    <label style="margin-top:14px;">Animations</label>
+    <div class="anim-grid" id="anim-grid">
+      <div class="anim-opt sel" data-v="aos_smooth" onclick="selOpt(this,'anim-grid')">✨ AOS Smooth</div>
+      <div class="anim-opt" data-v="gsap_pro" onclick="selOpt(this,'anim-grid')">🔥 GSAP Pro</div>
+      <div class="anim-opt" data-v="css_elegant" onclick="selOpt(this,'anim-grid')">💎 CSS Elegant</div>
+      <div class="anim-opt" data-v="bounce_fun" onclick="selOpt(this,'anim-grid')">🎯 Bounce Fun</div>
+      <div class="anim-opt" data-v="fade_minimal" onclick="selOpt(this,'anim-grid')">🌫️ Fade Minimal</div>
+      <div class="anim-opt" data-v="no_anim" onclick="selOpt(this,'anim-grid')">⚡ No Animations</div>
+    </div>
+    <input type="hidden" id="anim-style" value="aos_smooth">
+
+    <label style="margin-top:14px;">Extra Features</label>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;" id="features-grid">
+      <div class="anim-opt sel" data-v="whatsapp_btn" onclick="toggleFeature(this)">💬 WhatsApp Button</div>
+      <div class="anim-opt sel" data-v="counter_anim" onclick="toggleFeature(this)">🔢 Animated Counters</div>
+      <div class="anim-opt" data-v="loading_screen" onclick="toggleFeature(this)">⏳ Loading Screen</div>
+      <div class="anim-opt" data-v="scroll_progress" onclick="toggleFeature(this)">📊 Scroll Progress</div>
+      <div class="anim-opt" data-v="back_to_top" onclick="toggleFeature(this)">⬆️ Back to Top</div>
+      <div class="anim-opt" data-v="sticky_header" onclick="toggleFeature(this)">📌 Sticky Header</div>
+      <div class="anim-opt" data-v="dark_mode" onclick="toggleFeature(this)">🌙 Dark Mode Toggle</div>
+      <div class="anim-opt" data-v="particles" onclick="toggleFeature(this)">✨ Particle BG</div>
+    </div>
+  </div>
+
+  <button class="btn-gen" id="gen-btn" onclick="generate()">🧠 Generate HTML Website Now</button>
+
+  <div class="status" id="status">
+    <div class="spinner"></div>
+    <div class="stxt" id="stxt">AI designing your website...</div>
+    <div class="log" id="log"></div>
+  </div>
+
+  <div class="result" id="result"></div>
+
+  <div class="footer">Made by <a href="https://linkedin.com/in/rishab-sharma-dev">Rishabh Sharma</a> · WordPress & Web Developer · New Delhi</div>
+</div>
+
+<script>
+// ── Setup ──────────────────────────────────────────────────────────────────
+function saveKeys(){
+  var a=document.getElementById('ak').value.trim();
+  if(!a){alert('API key daalo!');return;}
+  localStorage.setItem('hg_ak',a);
+  var u=document.getElementById('uk').value.trim();
+  if(u) localStorage.setItem('hg_uk',u);
+  document.getElementById('setup-card').style.display='none';
+  alert('✅ Saved! Ab generate karo.');
+}
+window.addEventListener('load',function(){
+  if(localStorage.getItem('hg_ak')) document.getElementById('setup-card').style.display='none';
+});
+
+// ── Selection helpers ──────────────────────────────────────────────────────
+function selOpt(el,grid){
+  document.getElementById(grid).querySelectorAll('.style-opt,.color-opt,.anim-opt').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+  var map={'hero-grid':'hero-style','color-grid':'color-theme','anim-grid':'anim-style'};
+  if(map[grid]) document.getElementById(map[grid]).value=el.dataset.v;
+}
+function toggleFeature(el){ el.classList.toggle('sel'); }
+function getFeatures(){ return [...document.getElementById('features-grid').querySelectorAll('.sel')].map(e=>e.dataset.v); }
+
+// ── Auto fill ──────────────────────────────────────────────────────────────
+function autofill(){
+  var raw=document.getElementById('qp').value.trim();
+  if(!raw){alert('Paste karo pehle!');return;}
+  function ex(keys,t){for(var k of keys){var m=t.match(new RegExp(k+'[:\\-]?\\s*(.+)','im'));if(m)return m[1].trim();}return '';}
+  var bn=ex(['Business','Name','Clinic','Restaurant','Hotel','Shop','Studio'],raw);
+  var loc=ex(['Location','Address','City','Area'],raw);
+  var ph=ex(['Phone','Mobile','WhatsApp','Contact'],raw);
+  var svc=ex(['Services','Service','Products','Offers'],raw);
+  var ext=ex(['About','Extra','Info','Experience','Note'],raw);
+  var low=raw.toLowerCase();
+  var btMap={'dental':'dental clinic','salon':'salon and beauty parlour','restaurant':'restaurant','hotel':'hotel resort','gym':'gym fitness center','real estate':'real estate agency','interior':'interior design studio','coaching':'education coaching','spa':'medical spa','law':'law firm','construction':'construction firm','travel':'travel agency','fashion':'fashion boutique','digital':'digital marketing agency','ecommerce':'ecommerce store','photography':'photography studio','ca ':'CA accounting firm','hospital':'hospital clinic','news':'news magazine'};
+  var btSel=document.getElementById('bt');
+  for(var k in btMap){if(low.includes(k)){for(var o of btSel.options){if(o.value===btMap[k]){btSel.value=btMap[k];break;}}break;}}
+  if(bn) document.getElementById('bn').value=bn;
+  if(loc) document.getElementById('loc').value=loc;
+  if(ph) document.getElementById('wa').value=ph;
+  if(svc) document.getElementById('svc').value=svc;
+  if(ext) document.getElementById('ext').value=ext;
+  var btn=document.querySelector('.quick-box .btn-gold');
+  btn.textContent='✅ Fields Filled! Review & Generate!';
+  btn.style.background='#1D9E75';
+}
+
+// ── Color palettes ─────────────────────────────────────────────────────────
+var palettes={
+  blue_pro:    {p:'#0A66C2',s:'#1A3A5C',a:'#FF6B35',g1:'#0A1628',g2:'#1A3A5C',bg:'#0A1628',light:'#F0F6FF',td:'#1A1A2E',tm:'#666',white:'#FFFFFF'},
+  dark_gold:   {p:'#C9A84C',s:'#1A1A1A',a:'#E8C97A',g1:'#0D0D0D',g2:'#2A1A00',bg:'#0D0D0D',light:'#F5F0E8',td:'#1A1A1A',tm:'#888',white:'#FFFFFF'},
+  green_nature:{p:'#1D9E75',s:'#0F6E56',a:'#4CAF50',g1:'#0B3D2E',g2:'#1A5C44',bg:'#0B3D2E',light:'#F0FBF6',td:'#1A2E25',tm:'#555',white:'#FFFFFF'},
+  royal_purple:{p:'#6C3FC5',s:'#4A1E8C',a:'#9B59B6',g1:'#1A0A2E',g2:'#2D1660',bg:'#1A0A2E',light:'#F5F0FF',td:'#1A0A2E',tm:'#666',white:'#FFFFFF'},
+  bold_red:    {p:'#E53935',s:'#B71C1C',a:'#FF6B6B',g1:'#1A0505',g2:'#3A0808',bg:'#1A0505',light:'#FFF5F5',td:'#1A0505',tm:'#666',white:'#FFFFFF'},
+  teal_fresh:  {p:'#00897B',s:'#00695C',a:'#26C6DA',g1:'#003D36',g2:'#005247',bg:'#003D36',light:'#E0F7FA',td:'#003D36',tm:'#555',white:'#FFFFFF'},
+  rose_gold:   {p:'#C2185B',s:'#880E4F',a:'#FFA000',g1:'#1A0010',g2:'#3A0020',bg:'#1A0010',light:'#FCE4EC',td:'#1A0010',tm:'#666',white:'#FFFFFF'},
+  midnight_orange:{p:'#FF6F00',s:'#E65100',a:'#FFD600',g1:'#1A0A00',g2:'#2A1200',bg:'#1A0A00',light:'#FFF8F0',td:'#1A0A00',tm:'#666',white:'#FFFFFF'},
+};
+
+// ── Animation libraries ────────────────────────────────────────────────────
+function getAnimLibs(anim){
+  var libs='';
+  if(anim==='aos_smooth'||anim==='css_elegant'){
+    libs+='<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">';
+    libs+='<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"><\/script>';
+  }
+  if(anim==='gsap_pro'){
+    libs+='<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"><\/script>';
+    libs+='<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"><\/script>';
+  }
+  return libs;
+}
+
+function getAnimInit(anim){
+  if(anim==='aos_smooth') return `AOS&&AOS.init({duration:800,once:true,offset:80});`;
+  if(anim==='gsap_pro') return `if(typeof gsap!=='undefined'&&typeof ScrollTrigger!=='undefined'){gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('[data-gsap]').forEach(el=>{gsap.from(el,{opacity:0,y:60,duration:1,scrollTrigger:{trigger:el,start:'top 85%'}});});}`;
+  if(anim==='css_elegant') return `AOS&&AOS.init({duration:1000,once:true,easing:'ease-in-out',offset:60});`;
+  if(anim==='bounce_fun') return `AOS&&AOS.init({duration:600,once:true,easing:'ease-out-bounce'});`;
+  return '';
+}
+
+function getAnimAttr(anim,delay){
+  if(anim==='no_anim'||anim==='fade_minimal') return '';
+  if(anim==='gsap_pro') return ' data-gsap="true"';
+  var delays=['','data-aos-delay="100"','data-aos-delay="200"','data-aos-delay="300"','data-aos-delay="400"'];
+  return ` data-aos="fade-up" ${delays[delay%5]||''}`;
+}
+
+// ── Unsplash ───────────────────────────────────────────────────────────────
+async function fetchImg(q,k){
+  if(!k) return '';
+  try{var r=await fetch('https://api.unsplash.com/photos/random?query='+encodeURIComponent(q)+'&orientation=landscape&client_id='+k);var d=await r.json();return d.urls?.regular||'';}catch{return '';}
+}
+
+// ── Log ────────────────────────────────────────────────────────────────────
+function addLog(m,t){
+  var el=document.getElementById('log');
+  el.innerHTML+='<div class="ll l'+(t||'i')+'">▸ '+m+'</div>';
+  el.scrollTop=el.scrollHeight;
+}
+
+// ── Main generate ──────────────────────────────────────────────────────────
+async function generate(){
+  var bt=document.getElementById('bt').value;
+  var bn=document.getElementById('bn').value.trim();
+  var loc=document.getElementById('loc').value.trim();
+  var svc=document.getElementById('svc').value.trim();
+  var wa=document.getElementById('wa').value.trim();
+  var ext=document.getElementById('ext').value.trim();
+  var hs=document.getElementById('hero-style').value;
+  var ct=document.getElementById('color-theme').value;
+  var an=document.getElementById('anim-style').value;
+  var feats=getFeatures();
+  var ak=localStorage.getItem('hg_ak');
+  var uk=localStorage.getItem('hg_uk');
+
+  if(!bt||!bn){alert('Industry aur Business Name zaroori hai!');return;}
+  if(!ak){document.getElementById('setup-card').style.display='block';alert('Pehle API key save karo!');return;}
+
+  var c=palettes[ct]||palettes.blue_pro;
+  var waClean=wa.replace(/[^0-9+]/g,'');
+  var waLink=waClean?'https://wa.me/'+waClean.replace('+',''):'#contact';
+
+  document.getElementById('gen-btn').disabled=true;
+  document.getElementById('status').classList.add('show');
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('log').innerHTML='';
+
+  addLog('🧠 AI analyzing: '+bt,'i');
+  addLog('🎨 Style: '+hs+' | '+ct+' | '+an,'i');
+  addLog('⚡ Features: '+feats.join(', '),'i');
+
+  // Fetch images
+  var imgs=[];
+  if(uk){
+    document.getElementById('stxt').textContent='Fetching real images...';
+    var kwds=[bt+' professional modern',bt+' interior elegant',bt+' team smiling',bt+' service result',bn+' '+loc,'people happy '+bt];
+    for(var kw of kwds){imgs.push(await fetchImg(kw,uk));}
+    addLog('✅ Images: '+imgs.filter(Boolean).length+' fetched','ok');
+  }
+
+  // Build prompt for AI
+  document.getElementById('stxt').textContent='AI generating full HTML...';
+  var prompt=buildPrompt(bn,bt,loc,svc,ext,wa,hs,ct,an,feats,c,waLink);
+
+  try{
+    addLog('🤖 Calling Groq AI (generating full HTML)...','i');
+    var resp=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+ak},
+      body:JSON.stringify({
+        model:'qwen/qwen3.8-27b',
+        messages:[
+          {role:'system',content:'You are an expert HTML/CSS/JavaScript web developer. Generate complete, beautiful, production-ready HTML websites. Output ONLY raw HTML starting with <!DOCTYPE html>. No markdown, no backticks, no explanation.'},
+          {role:'user',content:prompt}
+        ],
+        temperature:0.8,
+        max_tokens:8000
+      })
+    });
+    var data=await resp.json();
+    if(data.error) throw new Error(data.error.message);
+    var html=data.choices[0].message.content;
+    // Clean
+    html=html.replace(/^```html?\s*/im,'').replace(/\s*```\s*$/im,'').trim();
+    if(!html.startsWith('<!')) html='<!DOCTYPE html>'+html.substring(html.indexOf('<html'));
+    addLog('✅ HTML generated ('+Math.round(html.length/1024)+'KB)','ok');
+
+    // Inject real images if available
+    if(imgs.filter(Boolean).length>0){
+      imgs.forEach((img,i)=>{
+        if(img) html=html.replace(new RegExp('UNSPLASH_IMG_'+(i+1),'g'),img);
+      });
+      addLog('✅ Real images injected','ok');
+    }
+
+    // Inject WhatsApp button if feature selected
+    if(feats.includes('whatsapp_btn')&&waClean){
+      var waBtn='<a href="'+waLink+'" style="position:fixed;bottom:24px;right:24px;z-index:9999;width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(37,211,102,0.5);text-decoration:none;animation:wa-pulse 2s infinite;" target="_blank" title="Chat on WhatsApp"><svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a><style>@keyframes wa-pulse{0%,100%{box-shadow:0 6px 20px rgba(37,211,102,0.5);}50%{box-shadow:0 6px 30px rgba(37,211,102,0.85),0 0 0 8px rgba(37,211,102,0.15);}}</style>';
+      html=html.replace('</body>',waBtn+'</body>');
+      addLog('✅ WhatsApp button injected','ok');
+    }
+
+    document.getElementById('stxt').textContent='Done!';
+    document.getElementById('status').classList.remove('show');
+    document.getElementById('gen-btn').disabled=false;
+
+    // Store
+    window._html=html;
+    window._name=bn;
+
+    // Blob preview
+    var blob=new Blob([html],{type:'text/html'});
+    var url=URL.createObjectURL(blob);
+
+    var resEl=document.getElementById('result');
+    resEl.classList.add('show');
+    resEl.innerHTML='<h3>✅ HTML Website Ready!</h3><div class="res-card"><strong>📄 '+bn+' — Full HTML Website</strong><small>Pure HTML · Bootstrap · '+an.replace('_',' ')+' animations · '+ct.replace('_',' ')+' theme</small><div class="btn-row"><a href="'+url+'" target="_blank" class="btn-s btn-prev">👁️ Preview</a><button onclick="dlPage()" class="btn-s btn-dl">⬇️ Download HTML</button></div><button onclick="shareWA(\''+url+'\')" class="btn-wa">💬 Share Preview on WhatsApp</button></div>';
+
+    addLog('🎉 Ready! '+Math.round(html.length/1024)+'KB HTML file','ok');
+
+  }catch(err){
+    document.getElementById('status').classList.remove('show');
+    document.getElementById('gen-btn').disabled=false;
+    addLog('❌ '+err.message,'e');
+    var resEl=document.getElementById('result');
+    resEl.classList.add('show');
+    resEl.innerHTML='<div style="background:#1A0505;border:1px solid #ff6b6b;border-radius:10px;padding:14px;"><p style="color:#ff6b6b;font-size:13px;margin:0;">❌ '+err.message+'</p><p style="color:#888;font-size:11px;margin:6px 0 0;">API key check karo ya dobara try karo.</p></div>';
+  }
+}
+
+function dlPage(){
+  if(!window._html) return;
+  var blob=new Blob([window._html],{type:'text/html'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(window._name||'website').replace(/\s+/g,'-').toLowerCase()+'.html';
+  a.click();
+}
+
+function shareWA(url){
+  var msg='Hi! Maine aapke business ke liye ek website banayi hai — *'+(window._name||'Website')+'*\n\n👀 Preview link:\n'+url+'\n\nPuri website sirf ₹8,000 mein!\n✅ Mobile responsive\n✅ Modern design\n✅ Same day delivery\n\n— Rishabh, Web Developer\n📞 +91 88514 71308';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+// ── Prompt builder ─────────────────────────────────────────────────────────
+function buildPrompt(bn,bt,loc,svc,ext,wa,hs,ct,an,feats,c,waLink){
+  var animLib=an==='gsap_pro'?'GSAP ScrollTrigger':'AOS (Animate on Scroll)';
+  var imgs=['UNSPLASH_IMG_1','UNSPLASH_IMG_2','UNSPLASH_IMG_3','UNSPLASH_IMG_4','UNSPLASH_IMG_5','UNSPLASH_IMG_6'];
+  var featsList=feats.join(', ');
+  var hasLoader=feats.includes('loading_screen');
+  var hasScroll=feats.includes('scroll_progress');
+  var hasBackTop=feats.includes('back_to_top');
+  var hasDark=feats.includes('dark_mode');
+  var hasParticles=feats.includes('particles');
+  var hasStickyHeader=feats.includes('sticky_header');
+  var hasCounter=feats.includes('counter_anim');
+
+  return `Create a COMPLETE, BEAUTIFUL, PRODUCTION-READY HTML website for:
+
+Business: "${bn}"
+Industry: ${bt}
+Location: ${loc||'India'}
+Services: ${svc||'Professional services'}
+WhatsApp: ${wa||'+91 98765 43210'}
+Extra info: ${ext||'Quality service, trusted by clients'}
+
+DESIGN REQUIREMENTS:
+- Hero style: ${hs.replace(/_/g,' ')}
+- Color theme: Primary #${c.p}, Secondary #${c.s}, Accent #${c.a}, Dark BG #${c.bg}
+- Animation: ${animLib}
+- Features needed: ${featsList}
+
+TECH STACK — USE ALL OF THESE:
+- Bootstrap 5 (CDN: https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css + JS)
+- Font Awesome 6 (CDN: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)
+- Google Fonts — Pick 2 premium fonts (e.g. Playfair Display + Inter, or Poppins + Raleway)
+- jQuery (CDN: https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js)
+${an==='gsap_pro'?'- GSAP 3 + ScrollTrigger (CDN: cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/)':'- AOS library (CDN: cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/)'}
+- Swiper.js for sliders (CDN: cdnjs.cloudflare.com/ajax/libs/Swiper/9.4.1/)
+
+SECTIONS TO INCLUDE (pick best ones for ${bt}):
+1. Navigation — sticky, glassmorphism blur effect, mobile hamburger menu
+2. Hero section — ${hs.replace(/_/g,' ')} style, use UNSPLASH_IMG_1 as background
+3. Stats/Numbers bar — ${hasCounter?'JavaScript count-up animation on scroll':'Bold numbers'}
+4. Services/Features — cards with hover effects
+5. About section — split layout with UNSPLASH_IMG_2
+6. Why Choose Us — dark background section
+7. Testimonials — Swiper slider carousel
+8. Team/Doctors/Experts (if relevant for ${bt})
+9. Gallery/Portfolio — masonry or grid with UNSPLASH_IMG_3, UNSPLASH_IMG_4
+10. FAQ — accordion with smooth animation
+11. CTA Section — full width with UNSPLASH_IMG_5
+12. Contact Section — form + map placeholder + contact info
+13. Footer — multi-column with social links
+
+IMPORTANT REQUIREMENTS:
+1. Make it VISUALLY STUNNING — like a ₹50,000 custom website
+2. Use REAL content specific to ${bt} — real service names, real prices, real FAQs
+3. Every section must look DIFFERENT — vary backgrounds (white, light gray, dark, gradient)
+4. Mobile-first responsive — perfect on phones
+5. Smooth hover effects on all cards and buttons
+6. ${hasStickyHeader?'Sticky header that changes on scroll (transparent → solid with shadow)':'Fixed header'}
+7. ${hasLoader?'Branded loading screen with progress bar — shows '+bn+' name — disappears after 2 seconds':'No loading screen'}
+8. ${hasScroll?'Scroll progress indicator at top of page (thin colored bar)':'No scroll progress'}
+9. ${hasBackTop?'Back to top button — appears after scrolling 300px':'No back to top'}
+10. ${hasDark?'Dark/Light mode toggle button in header':'No dark mode toggle'}
+11. ${hasParticles?'Subtle particle animation in hero background using pure CSS (no external lib)':'No particles'}
+12. WhatsApp button: ${wa?'Fixed bottom-right WhatsApp float button linking to '+waLink:'No WhatsApp button'}
+${hasCounter?'13. Animated counter: Use JavaScript to count up numbers when they scroll into view':''}
+
+ANIMATIONS:
+${an==='gsap_pro'?'- Use GSAP for hero entrance (stagger text elements)\n- ScrollTrigger for section reveals\n- Smooth parallax on hero image':an==='aos_smooth'?'- AOS data-aos="fade-up" on all sections\n- Staggered delays on grid items\n- data-aos="zoom-in" for cards':an==='css_elegant'?'- Custom CSS @keyframes for elegant fade-in\n- CSS transform transitions on hover\n- Smooth scale effects':an==='bounce_fun'?'- AOS with bounce easing\n- CSS bounce on buttons\n- Playful hover effects':an==='fade_minimal'?'- Simple CSS opacity transitions\n- Clean fade-in on scroll using Intersection Observer':'- No animations, clean static design'}
+
+COLOR USAGE:
+- Primary: ${c.p} — buttons, accents, headings
+- Secondary: ${c.s} — gradients, dark sections
+- Accent: ${c.a} — highlights, badges
+- Light bg: ${c.light} — alternating sections
+- Dark bg: ${c.bg} — hero, dark sections
+- Text dark: ${c.td}
+- Text muted: ${c.tm}
+
+IMAGE PLACEHOLDERS (replace with real images later):
+Use these exact strings as src values — they will be replaced:
+UNSPLASH_IMG_1 (hero), UNSPLASH_IMG_2 (about), UNSPLASH_IMG_3, UNSPLASH_IMG_4, UNSPLASH_IMG_5 (cta), UNSPLASH_IMG_6 (gallery)
+For images without placeholder, use: https://via.placeholder.com/800x600/${c.p.replace('#','')}/FFFFFF?text=${encodeURIComponent(bn)}
+
+OUTPUT: Complete HTML file starting with <!DOCTYPE html>
+- All CSS inline in <style> tag in <head>
+- All JavaScript inline in <script> tag before </body>
+- Self-contained — no external files except CDN libraries
+- Professional, pixel-perfect, impressive design
+- At least 800 lines of code for a complete website`;
+}
+</script>
+</body>
+</html>
